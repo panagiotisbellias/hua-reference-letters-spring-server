@@ -8,7 +8,7 @@
 		<version>3.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>hua.reference.letters</groupId>
+	<groupId>gr.hua.reference.letters</groupId>
 	<artifactId>spring.server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring.server</name>

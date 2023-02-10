@@ -1,4 +1,4 @@
-package hua.reference.letters.spring.server;
+package gr.hua.reference.letters.spring.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

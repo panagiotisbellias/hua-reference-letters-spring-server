@@ -1,4 +1,4 @@
-package hua.reference.letters.spring.server;
+package gr.hua.reference.letters.spring.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
