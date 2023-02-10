@@ -12,7 +12,7 @@
 	<artifactId>spring.server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring.server</name>
-	<description> Spring server of a reference letters application intented to be used from Harokopio Univesity of Athens</description>
+	<description> Spring server of a reference letters application intended to be used from Harokopio University of Athens</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
