@@ -7,32 +7,33 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class User {
+public class Request {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     @Setter
     private Integer id;
 
     @Getter
     @Setter
-    private String firstName;
+    private Teacher teacher;
 
     @Getter
     @Setter
-    private String lastName;
+    private Student student;
 
     @Getter
     @Setter
-    private String emailAddress;
+    private String recipientName;
+
+    @Getter
+    @Setter
+    private String recipientEmailAddress;
 
 }
