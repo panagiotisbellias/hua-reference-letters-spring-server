@@ -43,39 +43,31 @@ public class RequestController {
     }
 
     private String printRequests(Iterable<Request> requests) {
-        String response =
-                "<pre>ID\tStudent Name\t\tTeacher Name\t\tRecipient</br>";
+        StringBuilder response =
+                new StringBuilder("<pre>ID\tStudent Name\t\tTeacher Name\t\tRecipient</br>");
 
         while (requests.iterator().hasNext()) {
             Request request = requests.iterator().next();
-            response += request.getId() + "\t" + request.getStudent().getFirstName() + " " + request.getStudent().getLastName() + "\t\t" +
-                    request.getTeacher().getFirstName() + " " + request.getTeacher().getLastName() + "\t" +
-                    request.getRecipientName() + " - " + request.getRecipientEmailAddress();
+            response.append(request.getId()).append("\t").append(request.getStudent().getFirstName()).append(" ").append(request.getStudent().getLastName()).append("\t\t").append(request.getTeacher().getFirstName()).append(" ").append(request.getTeacher().getLastName()).append("\t").append(request.getRecipientName()).append(" - ").append(request.getRecipientEmailAddress());
         }
 
-        response = "Hello admin! The reference letter requests are: </br>" + response;
+        response.insert(0, "Hello admin! The reference letter requests are: </br>");
         return response + "</pre>";
     }
 
     @GetMapping("/")
-    public String getRequests() {
-        Iterable<Request> requests = requestRepository.findAll();
-        if (!requests.iterator().hasNext()) {
-            return "Navigate to http://localhost:8080/app/requests?username= and your username to see your reference letter requests";
+    public String getRequests(@Param(value = "username") String username) {
+
+        Iterable<Request> requests = null;
+
+        if (username == null) {
+            requests = requestRepository.findAll();
+            if (!requests.iterator().hasNext()) {
+                return "Navigate to http://localhost:8080/app/requests?username= and your username to see your reference letter requests";
+            }
+            return printRequests(requests);
         }
 
-        return printRequests(requests);
-
-    }
-
-    @GetMapping("/{id}")
-    public Request findRequestById(@PathVariable Integer id) {
-        return requestRepository.findRequestById(id);
-    }
-
-    @GetMapping("/")
-    public String getRequestsByUser(@Param(value = "username") String username) {
-        Iterable<Request> requests = null;
         Student student = studentRepository.findStudentByUsername(username);
         if (student != null) {
             requests = requestRepository.findRequestsByStudent(student);
@@ -91,6 +83,12 @@ public class RequestController {
         }
 
         return "No data are available for you!";
+
+    }
+
+    @GetMapping("/{id}")
+    public Request findRequestById(@PathVariable Integer id) {
+        return requestRepository.findRequestById(id);
     }
 
 }
