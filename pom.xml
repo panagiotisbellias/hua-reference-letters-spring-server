@@ -8,10 +8,10 @@
 		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>gr.hua.reference.letters</groupId>
-	<artifactId>spring.server</artifactId>
+	<groupId>gr.hua</groupId>
+	<artifactId>reference.letters.spring.server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring.server</name>
+	<name>reference.letters.spring.server</name>
 	<description> Spring server of a reference letters application intended to be used from Harokopio University of Athens</description>
 	<properties>
 		<java.version>11</java.version>

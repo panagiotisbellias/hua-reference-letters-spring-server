@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/requests")
+@RequestMapping("/app/requests")
 public class RequestController {
 
     @Autowired
@@ -42,9 +42,30 @@ public class RequestController {
         return "Added new request to database!";
     }
 
+    private String printRequests(Iterable<Request> requests) {
+        String response =
+                "<pre>ID\tStudent Name\t\tTeacher Name\t\tRecipient</br>";
+
+        while (requests.iterator().hasNext()) {
+            Request request = requests.iterator().next();
+            response += request.getId() + "\t" + request.getStudent().getFirstName() + " " + request.getStudent().getLastName() + "\t\t" +
+                    request.getTeacher().getFirstName() + " " + request.getTeacher().getLastName() + "\t" +
+                    request.getRecipientName() + " - " + request.getRecipientEmailAddress();
+        }
+
+        response = "Hello admin! The reference letter requests are: </br>" + response;
+        return response + "</pre>";
+    }
+
     @GetMapping("/")
-    public Iterable<Request> getRequests() {
-        return requestRepository.findAll();
+    public String getRequests() {
+        Iterable<Request> requests = requestRepository.findAll();
+        if (!requests.iterator().hasNext()) {
+            return "Navigate to http://localhost:8080/app/requests?username= and your username to see your reference letter requests";
+        }
+
+        return printRequests(requests);
+
     }
 
     @GetMapping("/{id}")
@@ -52,25 +73,24 @@ public class RequestController {
         return requestRepository.findRequestById(id);
     }
 
-    @GetMapping("/app")
-    public String userRequests(@Param(value = "username") String username) {
-        if (username == null) {
-            return "Navigate to http://localhost:8080/app?username= and your username to see your reference letter requests";
+    @GetMapping("/")
+    public String getRequestsByUser(@Param(value = "username") String username) {
+        Iterable<Request> requests = null;
+        Student student = studentRepository.findStudentByUsername(username);
+        if (student != null) {
+            requests = requestRepository.findRequestsByStudent(student);
+        } else {
+            Teacher teacher = teacherRepository.findTeacherByUsername(username);
+            if (teacher != null) {
+                requests = requestRepository.findRequestsByTeacher(teacher);
+            }
         }
-        String response =
-                "<pre>ID\tStudent Name\t\tTeacher Name\t\tReason\t\tSent at</br>";
-        if (username.equals("spring1")) {
-            response += "1\tSpring Student\t\tSpring Teacher 1\tEducational\t16-02-2023T17:21</br>";
-            response += "2\tSpring Student\t\tSpring Teacher 2\tCarrier\t\t16-02-2023T17:22</br>";
+
+        if (requests != null) {
+            return printRequests(requests);
         }
-        if (username.equals("spring2")) {
-            response += "3\tSpring Student 2\tSpring Teacher 1\tEducational\t16-02-2023T17:23</br>";
-        }
-        if (!username.equals("spring1") && !username.equals("spring2")){
-            response = "No data are available for you!";
-        }
-        response = "Hello " + username + "! Your reference letter requests are: </br>" + response;
-        return response + "</pre>";
+
+        return "No data are available for you!";
     }
 
 }
